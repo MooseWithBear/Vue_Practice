@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordRelay-Component Version</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <word-relay start-word="레몬"></word-relay>
+        <word-relay start-word="중앙"></word-relay>
+        <word-relay start-word="계륵"></word-relay>
+    </div>
+    <script>
+        // 지금 컴포넌트는 전역 컴포넌트
+        // Component template should contain exactly one root element. If you are using v-if on multiple elements, use v-else-if to chain them instead.
+        Vue.component('wordRelay', { // 컴포넌트명은 보통 파스칼, 카멜, 케밥케이스를 쓴다. !하지만 컴포넌트를 사용할 때는 케밥케이스를 사용해야 한다.
+            template: `
+                <div>
+                    <div> 끝말잇기! [제시어 : {{word}} ]</div>
+                    <form v-on:submit="onSubmitForm" >
+                        <input v-model="value" ref="answer" type="text">
+                        <button>이어말하기</button>
+                    </form>
+                    <div id="result">{{result}}</div>
+                </div>
+            `,
+            // [Vue warn]: The "data" option should be a function that returns a per-instance value in component definitions.
+            data() {
+                return {
+                    word: this.startWord,
+                    value: '',
+                    result: '',
+                }
+            },
+            props: ['startWord'], // > 컴포넌트에 props를 사용할 때는 케밥케이스를 사용해야 한다.
+            methods: {
+                onSubmitForm(e) {
+                    e.preventDefault();
+                    if (this.word[this.word.length - 1] === this.value[0]) {
+                        this.result = '딩동댕';
+                        this.word = this.value;
+                        this.value = '';
+                        this.$refs.answer.focus()
+                    } else {
+                        this.result = '땡';
+                        this.value = '';
+                        this.$refs.answer.focus()
+                    }
+                }
+            },
+        })
+    </script>
+    <script>
+        const app = new Vue({
+            el: '#root',
+        });
+    </script>
+
+    <!-- //! 인스턴스 버전 -->
+    <!--     
+    <div id="root">
+        <div> 끝말잇기! [제시어 : {{word}} ]</div>
+        <form v-on:submit="onSubmitForm" >
+            <input v-model="value" ref="answer" type="text">
+            <button>이어말하기</button>
+        </form>
+        <div id="result">{{result}}</div>
+    </div>
+    <script> 
+        const app = new Vue({
+            el:'#root',
+            data: {
+                word:'계륵',
+                value:'',
+                result:'',
+            },
+            methods: {
+                onSubmitForm (e) {
+                    e.preventDefault();
+                    if(this.word[this.word.length-1]===this.value[0]) {
+                        this.result = '딩동댕';
+                        this.word = this.value;
+                        this.value = '';
+                        this.$refs.answer.focus()
+                    }else {
+                        this.result = '땡';
+                        this.value = '';
+                        this.$refs.answer.focus()
+                    }
+                }
+            },
+        })
+    </script>  -->
+</body>
+
+</html>
